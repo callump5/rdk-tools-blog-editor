@@ -8,7 +8,6 @@ use Livewire\Livewire;
 
 class BlogEditorServiceProvider extends ServiceProvider
 {
-
     public function boot(): void
     {
         Livewire::addNamespace(
