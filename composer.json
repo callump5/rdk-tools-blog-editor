@@ -1,0 +1,10 @@
+{
+    "name": "rdk-tools/blog-editor",
+    "description": "editor component",
+    "autoload": {
+        "psr-4": {
+            "RdkTools\\BlogEditor\\": "src/"
+        }
+    },
+    "require": {}
+}
