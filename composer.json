@@ -15,6 +15,11 @@
     },
     "require": {
         "livewire/livewire": "4.2.4",
-        "ezyang/htmlpurifier": "^4.19"
+        "ezyang/htmlpurifier": "4.19.0"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan vendor:publish --tag=blog-editor-assets --force"
+        ]
     }
 }

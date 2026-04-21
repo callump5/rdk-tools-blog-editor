@@ -1,20 +1,34 @@
 <?php
 
-namespace RdkTools\BlogEditor\Elements;
+namespace RdkTools\BlogEditor\Livewire\Elements;
 
 use HTMLPurifier;
 use HTMLPurifier_Config;
+use RdkTools\BlogEditor\Contracts\EditorComponent;
+use RdkTools\BlogEditor\Traits\EditorElement;
 
-class TextElement
+class TextElement extends EditorComponent
 {
+    use EditorElement;
 
-    public static function parseElementContent(string $rawHtml): string
+    public string $slug = 'text-element';
+
+    public function validateElement(string $rawHtml): string
     {
         $cleaned = self::cleanHtml($rawHtml);
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
-        return $styled;
+        $html = self::removeBrTags($styled);
+
+
+        return $html;
     }
+
+    public static function removeBrTags(string $html): string
+    {
+        return str_replace(['<br />', '<br>'], '', $html);
+    }
+
     public static function formatUnwrapped(string $cleanHtml): string
     {
         $dom = new \DOMDocument();
@@ -25,13 +39,41 @@ class TextElement
 
         @$dom->loadHTML($cleanHtml);
 
+        // 1. Replace all div tags with p tags
+        $divElements = $dom->getElementsByTagName('div');
 
+        // Iterate backwards to avoid index issues when removing
+        while ($divElements->length > 0) {
+            $div = $divElements->item(0);
+
+            // Create new p element
+            $p = $dom->createElement('p');
+
+            // Copy all attributes from div to p
+            foreach ($div->attributes as $attr) {
+                $p->setAttribute($attr->name, $attr->value);
+            }
+
+            // Move all child nodes from div to p
+            while ($div->firstChild) {
+                $p->appendChild($div->firstChild);
+            }
+
+            // Replace div with p
+            $div->parentNode->replaceChild($p, $div);
+        }
+
+        // 2. Wrap unwrapped text nodes in p tags
         $nodesToProcess = [];
-        foreach ($dom->getElementsByTagName('body')->item(0)->childNodes as $node) {
-            if ($node->nodeType === XML_TEXT_NODE) {
-                $text = trim($node->textContent);
-                if (!empty($text)) {
-                    $nodesToProcess[] = $node;
+
+        $bodyElements = $dom->getElementsByTagName('body');
+        if ($bodyElements->length > 0) {
+            foreach ($bodyElements->item(0)->childNodes as $node) {
+                if ($node->nodeType === XML_TEXT_NODE) {
+                    $text = trim($node->textContent);
+                    if (!empty($text)) {
+                        $nodesToProcess[] = $node;
+                    }
                 }
             }
         }
@@ -39,27 +81,25 @@ class TextElement
         foreach ($nodesToProcess as $node) {
             $text = trim($node->textContent);
 
-            // Create new p element
             $p = $dom->createElement('p');
             $p->appendChild($dom->createTextNode($text));
 
-            // Replace text node with p element
+            // Use replaceChild() not replace()
             $node->parentNode->replaceChild($p, $node);
         }
 
         return $dom->saveHTML();
     }
 
-
     public static function addStyles(string $cleanHtml, array $styles = []): string
     {
         $defaultStyles = [
-            'p' => 'font-size: 16px; line-height: 1.6; margin: 10px 0;',
-            'h1' => 'text-white uppercase text-xl font-bold mb-5',
-            'h2' => 'font-size: 28px; margin: 18px 0; font-weight: bold;',
-            'a' => 'color: #0066cc; text-decoration: underline;',
-            'strong' => 'font-weight: bold;',
-            'em' => 'font-style: italic;',
+            'p' => 'text-neutral-400  leading-relaxed',
+            'h1' => 'text-white uppercase font-bold text-2xl md:text-4xl lg:text-5xl mb-4 md:leading-tight',
+            'h2' => 'text-white uppercase font-bold text-2xl md:text-3xl mb-3',
+            'a' => 'text-accent text-xs font-bold uppercase tracking-wide hover:underline',
+            'strong' => 'font-bold text-accent',
+            'b' => 'font-bold text-accent',
             'blockquote' => 'border-left: 4px solid #ddd; padding-left: 10px; margin-left: 0; color: #666;',
         ];
 
@@ -69,6 +109,7 @@ class TextElement
         if (!$cleanHtml) {
             return '';
         }
+
         @$dom->loadHTML($cleanHtml);
 
 
@@ -85,7 +126,7 @@ class TextElement
     private static function cleanHtml(string $data): string
     {
         $config = HTMLPurifier_Config::createDefault();
-        $config->set('HTML.Allowed', 'p,br,strong,em,u,h1,h2,h3,a,img,blockquote,ul,li');
+        $config->set('HTML.Allowed', 'p,strong,em,u,h1,h2,h3,a,img,blockquote,ul,li');
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true]);
         $config->set('HTML.AllowedAttributes', [
             'img.src' => true,
@@ -103,21 +144,5 @@ class TextElement
 
         $purifier = new HTMLPurifier($config);
         return $purifier->purify($data);
-    }
-
-    public static function renderFormField($key, $element)
-    {
-        $data = self::parseElementContent($element['value'] ?? '');
-
-        return view('blog-editor::components.form-field', [
-            'key' => $key,
-            'data' => $data,
-        ])->render();
-    }
-
-
-    public function renderContent(array $data): string
-    {
-        return "";
     }
 }
