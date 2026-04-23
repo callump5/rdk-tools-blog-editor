@@ -1,5 +1,5 @@
 <div class='block-container  col-span-{{ $element['colspan'] ?? 4 }} row-span-{{ $element['rowspan'] ?? 1 }}'
-    wire:wire:key="element-key--{{ $elementKey }}">
+    wire:key="element-key--{{ $element['slug'] }}-{{ $elementKey }}">
 
     <div class="border rounded">
         <div @class([
@@ -8,7 +8,13 @@
         ]) data-element-key='{{ $elementKey }}'>
             <div class="flex justify-between p-2 ">
                 <span class="block mb-1 text-xs uppercase">{{ $title }}</span>
-                <span class="text-xs block mb-4 uppercase" wire:click='finishEditing({{ $elementKey }})'>Close</span>
+                <div>
+
+                    <span class="text-xs block mb-4 uppercase"
+                        wire:click='finishEditing({{ $elementKey }})'>Close</span>
+                    <span class="text-xs block mb-4 uppercase"
+                        wire:click='deleteElement({{ $elementKey }})'>Delete</span>
+                </div>
             </div>
 
             @isset($editorContent)
@@ -24,7 +30,7 @@
             <div class="flex justify-between border-b border-white/30 pb-2 mb-2">
                 <div class="">
 
-                    <span class="block mb-1 text-xs uppercase">{{ $element['label'] }}</span>
+                    <span class="block mb-1 text-xs uppercase">{{ $title }}</span>
 
                     <div class="flex gap-2 justify-end ">
                         <span for="" class="text-[10px] block uppercase ">Cols</span>
@@ -40,7 +46,9 @@
 
             </div>
             @isset($displayContent)
-                {{ $displayContent }}
+                <div class="space-y-4 py-3">
+                    {{ $displayContent }}
+                </div>
             @endisset
 
         </div>

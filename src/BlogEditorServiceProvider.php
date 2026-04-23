@@ -20,6 +20,7 @@ class BlogEditorServiceProvider extends ServiceProvider
         );
 
         $this->publishes([
+            __DIR__ . '/../migrations' => database_path('migrations'),
             __DIR__ . '/../public' => public_path('vendor/blog-editor'),
         ], 'blog-editor-assets');
     }

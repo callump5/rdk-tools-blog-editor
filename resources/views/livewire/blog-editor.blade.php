@@ -24,7 +24,7 @@
             <button wire:click='debug' class='bg-white/30 p-2 mb-2 block w-full rounded uppercase text-xs'>debug</button>
         </aside>
 
-        <main class="col-span-5 grid grid-cols-4 gap-4">
+        <main class="col-span-5 grid grid-cols-12 gap-4">
             @isset($elementData)
                 @foreach ($elementData as $key => $element)
                     @if ($element['slug'] === 'text-element')
@@ -56,6 +56,9 @@
                         if (i.classList.contains('active')) return;
 
                         const iframe = i.querySelector('iframe');
+
+                        console.log(123);
+                        if (!iframe) return;
                         const doc = iframe.contentDocument || iframe.contentWindow.document;
                         const elementKey = i.dataset.elementKey;
 
@@ -66,14 +69,19 @@
                         // Store doc by key
                         editors[elementKey] = doc;
 
-                        doc.addEventListener('input', (event) => {
-                            $wire.$dispatch('contentUpdated', {
-                                key: elementKey,
-                                value: doc.body.innerHTML
-                            })
-                        });
+                        let debounceTimer;
 
+                        doc.addEventListener('input', (event) => {
+                            clearTimeout(debounceTimer);
+                            debounceTimer = setTimeout(() => {
+                                $wire.$dispatch('contentUpdated', {
+                                    key: elementKey,
+                                    value: doc.body.innerHTML
+                                })
+                            }, 600); // 300ms delay
+                        });
                         const initialContent = i.querySelector('.content').value;
+                        console.log(initialContent);
                         doc.body.innerHTML = initialContent;
                         doc.body.focus();
 
@@ -103,6 +111,7 @@
                         }
                         if (action === 'heading') doc.execCommand('formatBlock', false, '<h1>');
                         if (action === 'headingSecondary') doc.execCommand('formatBlock', false, '<h2>');
+                        if (action === 'headingTertiary') doc.execCommand('formatBlock', false, '<h3>');
                         if (action === 'link') {
                             const url = prompt('URL:');
                             if (url) doc.execCommand('createLink', false, url);
@@ -112,6 +121,7 @@
                     });
                 }
 
+                initaliseWysiwyg();
 
                 $wire.$on('initaliseWysiwyg', function() {
                     initaliseWysiwyg();

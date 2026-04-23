@@ -14,7 +14,12 @@ trait EditorElement
             return;
         }
 
-        $this->element['value'] = $this->validateElement($value);
+        $this->element['value'] = static::validateElement($value);
+        $this->dispatch('updatedElement', $this->elementKey, $this->element);
+    }
+
+    public function updated($key, $vale)
+    {
         $this->dispatch('updatedElement', $this->elementKey, $this->element);
     }
 
@@ -26,6 +31,11 @@ trait EditorElement
     public function finishEditing()
     {
         $this->element['editing'] = false;
+    }
+
+    public function deleteElement($key)
+    {
+        $this->dispatch('deleteElementDataItem', $key);
     }
 
     public function render()

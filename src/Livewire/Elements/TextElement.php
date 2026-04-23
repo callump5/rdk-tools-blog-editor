@@ -13,15 +13,43 @@ class TextElement extends EditorComponent
 
     public string $slug = 'text-element';
 
-    public function validateElement(string $rawHtml): string
+    public static function validateElement(string $rawHtml): string
     {
         $cleaned = self::cleanHtml($rawHtml);
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
         $html = self::removeBrTags($styled);
+        $cleanedHtml = self::extractElements($html);
 
 
-        return $html;
+        return $cleanedHtml;
+    }
+
+    public static function extractElements($html)
+    {
+        $dom = new \DOMDocument();
+
+        if (!$html) {
+            return '';
+        }
+
+        @$dom->loadHTML($html);
+
+        // Use this:
+        $bodyElements = $dom->getElementsByTagName('body');
+        if ($bodyElements->length > 0) {
+            $body = $bodyElements->item(0);
+
+            // Get only the inner HTML of the body
+            $html = '';
+            foreach ($body->childNodes as $node) {
+                $html .= $dom->saveHTML($node);
+            }
+
+            return $html;
+        }
+
+        return '';
     }
 
     public static function removeBrTags(string $html): string
@@ -84,7 +112,6 @@ class TextElement extends EditorComponent
             $p = $dom->createElement('p');
             $p->appendChild($dom->createTextNode($text));
 
-            // Use replaceChild() not replace()
             $node->parentNode->replaceChild($p, $node);
         }
 
@@ -94,12 +121,17 @@ class TextElement extends EditorComponent
     public static function addStyles(string $cleanHtml, array $styles = []): string
     {
         $defaultStyles = [
-            'p' => 'text-neutral-400  leading-relaxed',
+            'p' => 'text-neutral-400  leading-relaxed mb-5 text-white',
             'h1' => 'text-white uppercase font-bold text-2xl md:text-4xl lg:text-5xl mb-4 md:leading-tight',
-            'h2' => 'text-white uppercase font-bold text-2xl md:text-3xl mb-3',
-            'a' => 'text-accent text-xs font-bold uppercase tracking-wide hover:underline',
-            'strong' => 'font-bold text-accent',
-            'b' => 'font-bold text-accent',
+            'h2' => 'text-white uppercase font-bold text-2xl md:text-3xl mb-3 mt-10',
+            'h3' => 'text-white uppercase font-bold text-lg md:text-xl mb-3 mt-5',
+            'ol' => 'text-white list-decimal pl-5 space-y-4 mb-4',
+            'ul' => 'text-white list-disc pl-5 space-y-4 mb-4',
+            'li' => '',
+            'a' => 'text-accent uppercase  hover:underline',
+            'strong' => ' text-accent',
+            'b' => 'text-accent',
+            'img' => 'w-full',
             'blockquote' => 'border-left: 4px solid #ddd; padding-left: 10px; margin-left: 0; color: #666;',
         ];
 
@@ -115,8 +147,7 @@ class TextElement extends EditorComponent
 
         foreach ($mergedStyles as $tag => $style) {
             foreach ($dom->getElementsByTagName($tag) as $element) {
-                $existing = $element->getAttribute('class');
-                $element->setAttribute('class', $existing . $style);
+                $element->setAttribute('class', $style);
             }
         }
 

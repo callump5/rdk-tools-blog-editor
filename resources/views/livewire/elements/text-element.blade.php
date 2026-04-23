@@ -7,6 +7,7 @@
             <button class='p-2 border-r' data-action="bold">B</button>
             <button class='p-2 border-r' data-action="heading">H1</button>
             <button class='p-2 border-r' data-action="headingSecondary">H2</button>
+            <button class='p-2 border-r' data-action="headingTertiary">H3</button>
             <button class='p-2 border-r' data-action="image">Image</button>
             <button class='p-2 ' data-action="link">Link</button>
         </div>
@@ -19,9 +20,7 @@
     </x-slot:editor-content>
 
     <x-slot:display-content>
-        <div class="space-y-4 py-3">
-            {!! $element['value'] ??
-                'Tempor cupidatat nulla aliquip commodo nulla dolore consequat do ipsum. Ad laboris ea pariatur.' !!}
-        </div>
+        {!! $element['value'] ??
+            'Tempor cupidatat nulla aliquip commodo nulla dolore consequat do ipsum. Ad laboris ea pariatur.' !!}
     </x-slot:display-content>
 </x-blog-editor::element-container>
