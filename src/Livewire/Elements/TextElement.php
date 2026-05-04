@@ -34,7 +34,6 @@ class TextElement extends EditorComponent
 
         @$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);
 
-        // Use this:
         $bodyElements = $dom->getElementsByTagName('body');
         if ($bodyElements->length > 0) {
             $body = $bodyElements->item(0);
