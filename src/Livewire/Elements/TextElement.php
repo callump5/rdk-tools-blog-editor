@@ -15,28 +15,25 @@ class TextElement extends EditorComponent
 
     public static function validateElement(string $rawHtml): string
     {
-
-
         $cleaned = self::cleanHtml($rawHtml);
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
-        $html = self::removeBrTags($styled);
-        $cleanedHtml = self::extractElements($html);
+        $html = self::removeTags($styled);
+        // $cleanedHtml = self::extractElements($html);
 
-
-
-        return $cleanedHtml;
+        return $html;
     }
 
     public static function extractElements($html)
     {
-        $dom = new \DOMDocument('1.0', 'UTF-8');
+
+        $dom = new \DOMDocument('1.0');
 
         if (!$html) {
             return '';
         }
 
-        @$dom->loadHTML($html);
+        @$dom->loadHTML($html, LIBXML_HTML_NODEFDTD);
 
         // Use this:
         $bodyElements = $dom->getElementsByTagName('body');
@@ -55,9 +52,9 @@ class TextElement extends EditorComponent
         return '';
     }
 
-    public static function removeBrTags(string $html): string
+    public static function removeTags(string $html): string
     {
-        return str_replace(['<br />', '<br>'], '', $html);
+        return str_replace(['<html>', '</html>', '<body>', '</body>', '<br />', '<br>'], '', $html);
     }
 
     public static function formatUnwrapped(string $cleanHtml): string
@@ -68,7 +65,7 @@ class TextElement extends EditorComponent
             return '';
         }
 
-        @$dom->loadHTML($cleanHtml,  LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        @$dom->loadHTML($cleanHtml, LIBXML_HTML_NODEFDTD);
 
         // 1. Replace all div tags with p tags
         $divElements = $dom->getElementsByTagName('div');
