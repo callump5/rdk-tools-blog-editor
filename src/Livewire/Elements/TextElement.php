@@ -29,13 +29,13 @@ class TextElement extends EditorComponent
 
     public static function extractElements($html)
     {
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument('1.0', 'UTF-8');
 
         if (!$html) {
             return '';
         }
 
-        @$dom->loadHTML($html);
+        @$dom->loadHTML($html,  LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         // Use this:
         $bodyElements = $dom->getElementsByTagName('body');
@@ -61,13 +61,13 @@ class TextElement extends EditorComponent
 
     public static function formatUnwrapped(string $cleanHtml): string
     {
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument('1.0', 'UTF-8');
 
         if (!$cleanHtml) {
             return '';
         }
 
-        @$dom->loadHTML($cleanHtml);
+        @$dom->loadHTML($cleanHtml,  LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         // 1. Replace all div tags with p tags
         $divElements = $dom->getElementsByTagName('div');
@@ -139,12 +139,12 @@ class TextElement extends EditorComponent
 
         $mergedStyles = array_merge($defaultStyles, $styles);
 
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument('1.0', 'UTF-8');
         if (!$cleanHtml) {
             return '';
         }
 
-        @$dom->loadHTML($cleanHtml);
+        @$dom->loadHTML($cleanHtml,  LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
 
         foreach ($mergedStyles as $tag => $style) {
