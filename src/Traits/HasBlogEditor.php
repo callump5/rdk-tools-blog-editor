@@ -32,13 +32,17 @@ trait HasBlogEditor
                 if (isset($element['path'])) {
 
                     if (str_contains($element['src'], 'editor-images') !== false && isset($element['upload_path'])) {
+
+                        $element['upload_path'] = str_replace('public/', '/', $element['upload_path']);
+                        $element['src'] = str_replace('public/', '/', $element['upload_path']);
                         $this->blogEditorContent[$key] = $element;
                         continue;
                     }
+
                     $tmpImage = TemporaryUploadedFile::unserializeFromLivewireRequest('livewire-file:' . $element['path']);
-                    $path = $tmpImage->store('editor-images');
-                    $element['upload_path'] = $path;
-                    $element['src'] = $path;
+                    $path = $tmpImage->store('public/editor-images');
+                    $element['upload_path'] = str_replace('public/', '/', $path);
+                    $element['src'] = str_replace('public/', '/', $path);
                 }
             }
 

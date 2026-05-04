@@ -8,6 +8,7 @@
             <div class="grid grid-cols-4 gap-4">
                 <div class="col-span-2">
                     @isset($element['upload_path'])
+
                         <img src="{{ asset($element['upload_path']) }}" alt="">
                     @elseif(isset($element['src']))
                         <img src="{{ asset($element['src']) }}" alt="">
@@ -19,8 +20,8 @@
                 <div class="p-2 col-span-2 flex flex-col justify-center">
                     <div class="mb-7">
                         <span class="block uppercase font mb-4">Upload Image</span>
-                        <input class="block mb-1 text-xs uppercase" wire:model.live='element.value' type="file"
-                            name="" id="">
+                        <input class="block mb-1 text-xs uppercase" wire:model.live='element.value' type="file" name=""
+                            id="">
                         <div wire:loading wire:target="element.value">Uploading...</div>
                     </div>
 
@@ -51,6 +52,9 @@
 
     <x-slot:display-content>
         @isset($element['upload_path'])
+
+
+
             <img src="{{ asset($element['upload_path']) }}" alt="1">
         @elseif(isset($element['src']))
             <img src="{{ asset($element['src']) }}" alt="2">
