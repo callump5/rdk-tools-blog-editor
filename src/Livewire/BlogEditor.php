@@ -18,9 +18,9 @@ class BlogEditor extends Component
     public array $elementOptions = [];
     public array $elementData = [];
 
-    public function mount(string $data = '')
+    public function mount(null|string $data = '')
     {
-        if ($data !== '') {
+        if (!empty($data)) {
             $this->elementData = json_decode($data, true);
             $this->dispatch('updatedEditorContent', $this->elementData);
         }

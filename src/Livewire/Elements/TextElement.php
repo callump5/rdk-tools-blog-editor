@@ -15,11 +15,13 @@ class TextElement extends EditorComponent
 
     public static function validateElement(string $rawHtml): string
     {
+
         $cleaned = self::cleanHtml($rawHtml);
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
         $html = self::removeBrTags($styled);
         $cleanedHtml = self::extractElements($html);
+
 
 
         return $cleanedHtml;
@@ -156,6 +158,8 @@ class TextElement extends EditorComponent
 
     private static function cleanHtml(string $data): string
     {
+
+        $data = str_replace('&nbsp;', ' ', $data);
         $config = HTMLPurifier_Config::createDefault();
         $config->set('HTML.Allowed', 'p,strong,em,u,h1,h2,h3,a,img,blockquote,ul,li');
         $config->set('URI.AllowedSchemes', ['http' => true, 'https' => true]);

@@ -1,4 +1,4 @@
-<div class="grid grid-cols-12" style="column-gap:20px">
+<div class="grid grid-cols-12" style="column-gap:40px">
     @isset($contentData)
         @foreach ($contentData as $element)
             <div class="col-span-12 md:col-span-{{ $element['colspan'] ?? 4 }} md:row-span-{{ $element['rowspan'] ?? 1 }} ">

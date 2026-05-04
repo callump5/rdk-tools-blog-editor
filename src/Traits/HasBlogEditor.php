@@ -18,6 +18,7 @@ trait HasBlogEditor
 
     public function saveBlogEditorContent(object $object, $save = true)
     {
+
         foreach ($this->blogEditorContent as $key => $element) {
             $element['editing'] = false;
 

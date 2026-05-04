@@ -14,8 +14,8 @@
         }
     },
     "require": {
-        "livewire/livewire": "4.2.4",
-        "ezyang/htmlpurifier": "4.19.0"
+        "livewire/livewire": "^4.2",
+        "ezyang/htmlpurifier": "^4.19.0"
     },
     "scripts": {
         "post-autoload-dump": [
