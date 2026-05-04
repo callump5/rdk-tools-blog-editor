@@ -161,8 +161,8 @@ class TextElement extends EditorComponent
     {
         // Convert smart quotes to straight quotes
         $data = str_replace(
-            ['’'],
-            ['\''],
+            ['’', '–'],
+            ['\'', '-'],
             $data
         );
 
