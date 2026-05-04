@@ -19,7 +19,6 @@ class TextElement extends EditorComponent
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
         $html = self::removeTags($styled);
-        // $cleanedHtml = self::extractElements($html);
 
         return $html;
     }
