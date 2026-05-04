@@ -52,7 +52,7 @@ class TextElement extends EditorComponent
 
     public static function removeTags(string $html): string
     {
-        return str_replace(['<html>', '</html>', '<body>', '</body>', '<br />', '<br>'], '', $html);
+        return str_replace(['<html>', '</html>', '<body>', '</body>', '<br />', '<br>', 'Â'], '', $html);
     }
 
     public static function formatUnwrapped(string $cleanHtml): string
