@@ -25,6 +25,7 @@ trait HasBlogEditor
                 $element['value'] = TextElement::validateElement($element['value']);
             }
 
+
             if ($element['slug'] === 'image-element') {
 
                 if (isset($element['path'])) {
