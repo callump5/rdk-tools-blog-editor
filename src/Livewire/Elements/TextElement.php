@@ -16,6 +16,7 @@ class TextElement extends EditorComponent
     public static function validateElement(string $rawHtml): string
     {
 
+
         $cleaned = self::cleanHtml($rawHtml);
         $wrapped = self::formatUnwrapped($cleaned);
         $styled = self::addStyles($wrapped);
@@ -35,7 +36,7 @@ class TextElement extends EditorComponent
             return '';
         }
 
-        @$dom->loadHTML($html,  LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        @$dom->loadHTML($html);
 
         // Use this:
         $bodyElements = $dom->getElementsByTagName('body');
@@ -158,6 +159,12 @@ class TextElement extends EditorComponent
 
     private static function cleanHtml(string $data): string
     {
+        // Convert smart quotes to straight quotes
+        $data = str_replace(
+            ['’'],
+            ['\''],
+            $data
+        );
 
         $data = str_replace('&nbsp;', ' ', $data);
         $config = HTMLPurifier_Config::createDefault();
