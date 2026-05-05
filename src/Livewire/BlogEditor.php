@@ -3,6 +3,7 @@
 namespace RdkTools\BlogEditor\Livewire;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\Livewire;
@@ -55,9 +56,37 @@ class BlogEditor extends Component
         ];
     }
 
+    #[\Livewire\Attributes\On('moveDown')]
+    public function moveDown(int $elementKey)
+    {
+        $element = $this->elementData[$elementKey];
+        unset($this->elementData[$elementKey]);
+
+        $elementData = array_values($this->elementData);
+        array_splice($elementData, $elementKey + 1, 0, [$element]);
+        $this->elementData = $elementData;
+        $this->dispatch('updatedEditorContent', $this->elementData);
+    }
+
+    #[\Livewire\Attributes\On('moveUp')]
+    public function moveUp(int $elementKey)
+    {
+        $element = $this->elementData[$elementKey];
+        unset($this->elementData[$elementKey]);
+
+        $elementData = array_values($this->elementData);
+        array_splice($elementData, $elementKey - 1, 0, [$element]);
+
+        $this->elementData = $elementData;
+        $this->dispatch('updatedEditorContent', $this->elementData);
+    }
+
     public function addElement(string $element)
     {
-        $this->elementData[] = $this->elementOptions[$element];
+        $element = $this->elementOptions[$element];
+        $element['uuid'] = (string) Str::uuid();
+        $this->elementData[] = $element;
+
         $this->dispatch('initaliseWysiwyg');
     }
 

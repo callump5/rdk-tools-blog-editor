@@ -28,6 +28,17 @@ trait EditorElement
         $this->element['editing'] = true;
     }
 
+
+    public function moveDown($elementKey)
+    {
+        $this->dispatch('moveDown', $elementKey);
+    }
+
+    public function moveUp($elementKey)
+    {
+        $this->dispatch('moveUp', $elementKey);
+    }
+
     public function finishEditing()
     {
         $this->element['editing'] = false;

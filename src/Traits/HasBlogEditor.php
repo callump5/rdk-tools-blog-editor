@@ -4,6 +4,7 @@ namespace RdkTools\BlogEditor\Traits;
 
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use RdkTools\BlogEditor\Livewire\Elements\TextElement;
+use Illuminate\Support\Str;
 
 trait HasBlogEditor
 {
@@ -20,6 +21,11 @@ trait HasBlogEditor
     {
 
         foreach ($this->blogEditorContent as $key => $element) {
+
+            if (!isset($element['uuid'])) {
+                $element['uuid'] = (string) Str::uuid();
+            }
+
             $element['editing'] = false;
 
             if ($element['slug'] === 'text-element') {

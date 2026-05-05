@@ -3,7 +3,6 @@
 @endpush
 
 <div>
-
     <div class="grid grid-cols-6 gap-5">
 
         <aside>
@@ -27,12 +26,35 @@
         <main class="col-span-5 grid grid-cols-12 gap-4">
             @isset($elementData)
                 @foreach ($elementData as $key => $element)
-                    @if ($element['slug'] === 'text-element')
-                        <livewire:blog-editor::elements.text-element elementKey="{{ $key }}" :element="$element" />
-                    @endif
-                    @if ($element['slug'] === 'image-element')
-                        <livewire:blog-editor::elements.image-element elementKey="{{ $key }}" :element="$element" />
-                    @endif
+                    <div class='block-container  col-span-{{ $element['colspan'] ?? 4 }} row-span-{{ $element['rowspan'] ?? 1 }}'
+                        wire:key="element-key--{{ $element['uuid'] ?? $key }}" data-loop-key="{{ $key }}">
+                        <div class="flex gap-2 border border-b-0 rounded p-2">
+                            <span class="text-xs block  uppercase cursor-pointer" wire:click='moveUp({{ $key }})'>
+                                <svg class="w-4 h-4 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 6v13m0-13 4 4m-4-4-4 4" />
+                                </svg>
+                            </span>
+                            <span class="text-xs block  uppercase cursor-pointer"
+                                wire:click='moveDown({{ $key }})'><svg class="w-4 h-4 text-white"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M12 19V5m0 14-4-4m4 4 4-4" />
+                                </svg>
+                            </span>
+
+                        </div>
+                        @if ($element['slug'] === 'text-element')
+                            <livewire:blog-editor::elements.text-element elementKey="{{ $key }}"
+                                :element="$element" />
+                        @endif
+                        @if ($element['slug'] === 'image-element')
+                            <livewire:blog-editor::elements.image-element elementKey="{{ $key }}"
+                                :element="$element" />
+                        @endif
+                    </div>
                 @endforeach
             @endisset
 
