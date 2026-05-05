@@ -123,6 +123,7 @@ class TextElement extends EditorComponent
             'h1' => 'text-white uppercase font-bold text-2xl md:text-4xl lg:text-5xl mb-4 md:leading-tight',
             'h2' => 'text-white uppercase font-bold text-2xl md:text-3xl mb-3 mt-10',
             'h3' => 'text-white uppercase font-bold text-lg md:text-xl mb-3 mt-5',
+            'h4' => 'text-white uppercase font-bold mb-2 mt-3',
             'ol' => 'text-white list-decimal pl-5 space-y-4 mb-4',
             'ul' => 'text-white list-disc pl-5 space-y-4 mb-4',
             'li' => '',
