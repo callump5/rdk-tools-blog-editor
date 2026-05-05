@@ -125,7 +125,7 @@ class TextElement extends EditorComponent
             'h3' => 'text-white uppercase font-bold text-lg md:text-xl mb-3 mt-5',
             'h4' => 'text-white uppercase font-bold mb-2 mt-3',
             'ol' => 'text-white list-decimal pl-5 space-y-4 mb-4',
-            'ul' => 'text-white list-disc pl-5 space-y-4 mb-4',
+            'ul' => 'text-white list-disc pl-5 space-y-4 mb-8',
             'li' => '',
             'a' => 'text-accent uppercase  hover:underline',
             'strong' => ' text-accent',
