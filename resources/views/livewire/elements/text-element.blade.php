@@ -1,5 +1,5 @@
 <x-blog-editor::element-container :element="$element" :elementKey="$elementKey">
-    <x-slot:title>Text Block {{ $elementKey }}</x-slot:title>
+    <x-slot:title>Text Block</x-slot:title>
     <x-slot:editor-content>
 
         <div class='border-b border-t'>

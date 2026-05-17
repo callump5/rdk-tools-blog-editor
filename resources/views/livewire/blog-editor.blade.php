@@ -94,6 +94,7 @@
                         doc.designMode = 'on';
                         doc.body.style.fontFamily = 'Arial';
                         doc.body.style.padding = '10px 0 ';
+                        doc.body.style.height = '1000px';
 
                         // Store doc by key
                         editors[elementKey] = doc;

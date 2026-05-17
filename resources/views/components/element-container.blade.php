@@ -26,9 +26,7 @@
 
         <div class="flex justify-between border-b border-white/30 pb-2 mb-2">
             <div class="">
-
                 <span class="block mb-1 text-xs uppercase">{{ $title }}</span>
-
                 <div class="flex gap-2 justify-end ">
                     <span for="" class="text-[10px] block uppercase ">Cols</span>
                     <input wire:model.live='element.colspan'
@@ -39,14 +37,13 @@
                 </div>
             </div>
 
-
             <div>
-
                 <span class="text-xs block  uppercase ml-3 cursor-pointer mb-2"
                     wire:click='editBlock({{ $elementKey }})'>Edit</span>
-
             </div>
         </div>
+
+
         @isset($displayContent)
             <div class="space-y-4 py-3">
                 {{ $displayContent }}
