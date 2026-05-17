@@ -16,7 +16,7 @@
                 {{ $element['value'] ?? 'Tempor cupidatat nulla aliquip commodo nulla dolore consequat do ipsum. Ad laboris ea pariatur.' }}
             </textarea>
 
-        <iframe class="editor w-full ">Testing</iframe>
+        <iframe class="editor w-full" style='height: 500px'>Testing</iframe>
     </x-slot:editor-content>
 
     <x-slot:display-content>

@@ -78,7 +78,7 @@
                         if (i.classList.contains('active')) return;
 
                         const iframe = i.querySelector('iframe');
-                        iframe.style.height = '700px'
+
 
                         if (!iframe) return;
                         const doc = iframe.contentDocument || iframe.contentWindow.document;
@@ -95,7 +95,7 @@
                         doc.designMode = 'on';
                         doc.body.style.fontFamily = 'Arial';
                         doc.body.style.padding = '10px 0 ';
-                        doc.body.style.height = '700px';
+                        doc.body.style.height = '500px';
 
                         // Store doc by key
                         editors[elementKey] = doc;
